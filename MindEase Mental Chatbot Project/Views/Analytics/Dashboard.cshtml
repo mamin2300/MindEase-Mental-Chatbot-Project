@@ -1,0 +1,54 @@
+﻿@* Dashboard.cshtml *@
+@* Author: Malika *@
+@* Displays summary metrics for the campus wellness administrator *@
+
+@model Dictionary<string, double>
+
+@{
+    ViewData["Title"] = "Analytics Dashboard";
+}
+
+<div class="container mt-4">
+    <h2>Campus Wellness Dashboard</h2>
+    <p class="text-muted">Summary of mental health metrics across campus</p>
+
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-header">Total Reports</div>
+                <div class="card-body">
+                    <h3 class="card-title">@Model["TotalReports"]</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">Active Users</div>
+                <div class="card-body">
+                    <h3 class="card-title">@Model["ActiveUsers"]</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-header">Mood Entries</div>
+                <div class="card-body">
+                    <h3 class="card-title">@Model["MoodEntries"]</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">Chat Sessions</div>
+                <div class="card-body">
+                    <h3 class="card-title">@Model["ChatSessions"]</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a asp-action="Index" class="btn btn-secondary mt-3">View All Reports</a>
+</div>
