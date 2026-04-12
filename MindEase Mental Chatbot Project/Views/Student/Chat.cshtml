@@ -1,0 +1,36 @@
+@model List<MindEase_Mental_Chatbot_Project.Models.ChatMessage>
+
+@{
+    ViewData["Title"] = "Chat with MindEase";
+}
+
+<h2>Chat with MindEase</h2>
+<p>Tell me how you're feeling today.</p>
+
+<div class="card mb-3" style="max-height: 400px; overflow-y: auto;">
+    <div class="card-body">
+        @if (Model != null && Model.Count > 0)
+        {
+            @foreach (var chat in Model)
+            {
+                <div class="mb-2">
+                    <strong>You:</strong> @chat.UserMessage
+                    <br />
+                    <strong class="text-primary">MindEase:</strong> @chat.BotResponse
+                    <hr />
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-muted">No messages yet. Start the conversation!</p>
+        }
+    </div>
+</div>
+
+<form asp-action="Chat" method="post">
+    <div class="input-group">
+        <input type="text" name="userMessage" class="form-control" placeholder="Type your message..." required />
+        <button type="submit" class="btn btn-primary">Send</button>
+    </div>
+</form>

@@ -1,0 +1,27 @@
+@model MindEase_Mental_Chatbot_Project.Models.MoodEntry
+
+@{
+    ViewData["Title"] = "Log Your Mood";
+}
+
+<h2>Log Your Mood</h2>
+<p>How are you feeling right now?</p>
+
+<form asp-action="LogMood" method="post">
+    <div class="mb-3">
+        <label asp-for="MoodLevel" class="form-label">Mood Level (1 = Very Bad, 5 = Very Good)</label>
+        <select asp-for="MoodLevel" class="form-select">
+            <option value="1">1 - Very Bad</option>
+            <option value="2">2 - Bad</option>
+            <option value="3" selected>3 - Okay</option>
+            <option value="4">4 - Good</option>
+            <option value="5">5 - Very Good</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Notes" class="form-label">Notes (optional)</label>
+        <textarea asp-for="Notes" class="form-control" rows="3" placeholder="How are you feeling?"></textarea>
+    </div>
+    <button type="submit" class="btn btn-success">Save Mood</button>
+    <a asp-action="MoodHistory" class="btn btn-secondary ms-2">View History</a>
+</form>

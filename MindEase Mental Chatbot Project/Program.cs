@@ -2,6 +2,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<MindEase_Mental_Chatbot_Project.Services.IChatbotService, MindEase_Mental_Chatbot_Project.Services.ChatbotService>();
 
 var app = builder.Build();
 
