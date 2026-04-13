@@ -22,8 +22,7 @@ namespace MindEase_Mental_Chatbot_Project.Controllers
         [HttpPost]
         public IActionResult Index(Message message)
         {
-            var response = _chatbotService.GetResponse(message);
-            ViewBag.BotResponse = response.BotResponse;
+            ViewBag.BotResponse = _chatbotService.GetResponse(message.UserMessage);
             return View(message);
         }
     }

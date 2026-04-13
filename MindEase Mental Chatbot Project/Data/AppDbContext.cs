@@ -19,8 +19,9 @@ namespace MindEase_Mental_Chatbot_Project.Data
         public DbSet<MentalHealthReport> MentalHealthReports { get; set; }
         public DbSet<UsageMetric> UsageMetrics { get; set; }
 
-        // Azm's tables - to be added by Azm
-        // public DbSet<MoodEntry> MoodEntries { get; set; }
+        // Azm's tables
+        public DbSet<MoodEntry> MoodEntries { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
 
         // Mamin's tables - to be added by Mamin
         // public DbSet<CrisisAlert> CrisisAlerts { get; set; }

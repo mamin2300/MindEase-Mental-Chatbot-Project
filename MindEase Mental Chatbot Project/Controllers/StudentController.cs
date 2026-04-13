@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MindEase_Mental_Chatbot_Project.Data;
 using MindEase_Mental_Chatbot_Project.Models;
 using MindEase_Mental_Chatbot_Project.Services;
 
@@ -7,20 +9,12 @@ namespace MindEase_Mental_Chatbot_Project.Controllers
     public class StudentController : Controller
     {
         private readonly IChatbotService _chatbotService;
+        private readonly AppDbContext _context;
 
-        // In-memory dummy data (no database)
-        private static List<MoodEntry> _moods = new List<MoodEntry>
-        {
-            new MoodEntry { Id = 1, MoodLevel = 4, Notes = "Feeling good today!", CreatedAt = DateTime.Now.AddDays(-2) },
-            new MoodEntry { Id = 2, MoodLevel = 2, Notes = "Stressed about exams", CreatedAt = DateTime.Now.AddDays(-1) },
-            new MoodEntry { Id = 3, MoodLevel = 5, Notes = "Had a great day with friends", CreatedAt = DateTime.Now }
-        };
-
-        private static List<ChatMessage> _chatHistory = new List<ChatMessage>();
-
-        public StudentController(IChatbotService chatbotService)
+        public StudentController(IChatbotService chatbotService, AppDbContext context)
         {
             _chatbotService = chatbotService;
+            _context = context;
         }
 
         // GET: /Student
@@ -31,28 +25,30 @@ namespace MindEase_Mental_Chatbot_Project.Controllers
 
         // GET: /Student/Chat
         [HttpGet]
-        public IActionResult Chat()
+        public async Task<IActionResult> Chat()
         {
-            return View(_chatHistory);
+            var chatHistory = await _context.ChatMessages.OrderBy(c => c.SentAt).ToListAsync();
+            return View(chatHistory);
         }
 
         // POST: /Student/Chat
         [HttpPost]
-        public IActionResult Chat(string userMessage)
+        public async Task<IActionResult> Chat(string userMessage)
         {
             if (!string.IsNullOrWhiteSpace(userMessage))
             {
                 var botResponse = _chatbotService.GetResponse(userMessage);
                 var chat = new ChatMessage
                 {
-                    Id = _chatHistory.Count + 1,
                     UserMessage = userMessage,
                     BotResponse = botResponse,
                     SentAt = DateTime.Now
                 };
-                _chatHistory.Add(chat);
+                _context.ChatMessages.Add(chat);
+                await _context.SaveChangesAsync();
             }
-            return View(_chatHistory);
+            var chatHistory = await _context.ChatMessages.OrderBy(c => c.SentAt).ToListAsync();
+            return View(chatHistory);
         }
 
         // GET: /Student/LogMood
@@ -64,18 +60,19 @@ namespace MindEase_Mental_Chatbot_Project.Controllers
 
         // POST: /Student/LogMood
         [HttpPost]
-        public IActionResult LogMood(MoodEntry entry)
+        public async Task<IActionResult> LogMood(MoodEntry entry)
         {
-            entry.Id = _moods.Count + 1;
             entry.CreatedAt = DateTime.Now;
-            _moods.Add(entry);
+            _context.MoodEntries.Add(entry);
+            await _context.SaveChangesAsync();
             return RedirectToAction("MoodHistory");
         }
 
         // GET: /Student/MoodHistory
-        public IActionResult MoodHistory()
+        public async Task<IActionResult> MoodHistory()
         {
-            return View(_moods.OrderByDescending(m => m.CreatedAt).ToList());
+            var moods = await _context.MoodEntries.OrderByDescending(m => m.CreatedAt).ToListAsync();
+            return View(moods);
         }
     }
 }
