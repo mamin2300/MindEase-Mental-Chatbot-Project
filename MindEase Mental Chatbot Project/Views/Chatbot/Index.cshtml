@@ -1,0 +1,18 @@
+﻿@model MindEase_Mental_Chatbot_Project.Models.Message
+
+<h2>Chatbot</h2>
+
+<form asp-controller="Chatbot" asp-action="Index" method="post">
+    <div>
+        <label asp-for="UserMessage">Enter your message:</label>
+        <input asp-for="UserMessage" />
+    </div>
+    <br />
+    <button type="submit">Send</button>
+</form>
+
+@if (ViewBag.BotResponse != null)
+{
+    <h3>Bot Response:</h3>
+    <p>@ViewBag.BotResponse</p>
+}

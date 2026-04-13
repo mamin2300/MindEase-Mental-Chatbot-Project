@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Student Dashboard";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to MindEase</h1>
+    <p class="lead">Your mental wellness companion</p>
+    <hr />
+
+    <div class="row mt-4">
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Chat with MindEase</h5>
+                    <p class="card-text">Talk to our AI chatbot about how you're feeling.</p>
+                    <a asp-action="Chat" class="btn btn-primary">Start Chat</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Log Your Mood</h5>
+                    <p class="card-text">Track your daily mood and feelings.</p>
+                    <a asp-action="LogMood" class="btn btn-success">Log Mood</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Mood History</h5>
+                    <p class="card-text">View your past mood entries.</p>
+                    <a asp-action="MoodHistory" class="btn btn-info">View History</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
