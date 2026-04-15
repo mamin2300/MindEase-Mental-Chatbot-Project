@@ -32,9 +32,10 @@ namespace MindEase_Mental_Chatbot_Project.Controllers
         }
 
         // GET: Analytics/GenerateReport - shows the report generation form
+        
         public IActionResult GenerateReport()
         {
-            return View();
+            return View(new MentalHealthReport());
         }
 
         // POST: Analytics/GenerateReport - saves a new report
