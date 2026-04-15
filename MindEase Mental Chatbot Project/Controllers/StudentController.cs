@@ -43,7 +43,7 @@ namespace MindEase_Mental_Chatbot_Project.Controllers
         {
             if (!string.IsNullOrWhiteSpace(userMessage))
             {
-                var botResponse = _chatbotService.GetResponse(userMessage);
+                var botResponse = await _chatbotService.GetResponseAsync(userMessage);
                 var chat = new ChatMessage
                 {
                     UserMessage = userMessage,

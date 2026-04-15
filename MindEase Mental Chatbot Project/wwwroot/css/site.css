@@ -339,3 +339,85 @@ body {
     font-size: .88rem;
     color: var(--sky-dark);
 }
+
+/* ── Chat ────────────────────────────────────── */
+.chat-window {
+    background: #fff;
+    border: 1px solid var(--sky-mid);
+    border-radius: 12px;
+    padding: 20px;
+    min-height: 350px;
+    max-height: 450px;
+    overflow-y: auto;
+}
+
+.chat-row {
+    display: flex;
+    margin-bottom: 14px;
+}
+
+.user-row {
+    justify-content: flex-end;
+}
+
+.bot-row {
+    justify-content: flex-start;
+}
+
+.chat-bubble {
+    max-width: 70%;
+    padding: 10px 16px;
+    border-radius: 14px;
+}
+
+.user-bubble {
+    background-color: var(--sky-slate);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+}
+
+.bot-bubble {
+    background-color: var(--sky-light);
+    color: var(--sky-dark);
+    border-bottom-left-radius: 4px;
+}
+
+.bubble-label {
+    display: block;
+    font-size: .72rem;
+    font-weight: 700;
+    opacity: .7;
+    margin-bottom: 3px;
+}
+
+.bubble-text {
+    margin: 0;
+    font-size: .95rem;
+}
+
+.bubble-time {
+    display: block;
+    font-size: .68rem;
+    opacity: .6;
+    text-align: right;
+    margin-top: 4px;
+}
+
+.chat-input {
+    border-radius: 8px 0 0 8px;
+    border-color: var(--sky-mid);
+}
+
+.btn-send {
+    background-color: var(--sky-slate);
+    border-color: var(--sky-slate);
+    color: #fff;
+    border-radius: 0 8px 8px 0;
+    padding: 0 20px;
+}
+
+    .btn-send:hover {
+        background-color: var(--sky-dark);
+        border-color: var(--sky-dark);
+        color: #fff;
+    }
