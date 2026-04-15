@@ -37,13 +37,20 @@ namespace MindEase_Mental_Chatbot_Project.Controllers
             return View(chatHistory);
         }
 
-        // POST: /Student/Chat
+        private static readonly string[] CrisisKeywords =
+        {
+             "suicide", "kill myself", "end my life", "want to die",
+             "self harm", "hurt myself", "not worth living", "can't go on",
+             "hopeless", "helpless", "crisis", "emergency"
+        };
+
         [HttpPost]
         public async Task<IActionResult> Chat(string userMessage)
         {
             if (!string.IsNullOrWhiteSpace(userMessage))
             {
                 var botResponse = await _chatbotService.GetResponseAsync(userMessage);
+
                 var chat = new ChatMessage
                 {
                     UserMessage = userMessage,
@@ -51,8 +58,24 @@ namespace MindEase_Mental_Chatbot_Project.Controllers
                     SentAt = DateTime.Now
                 };
                 _context.ChatMessages.Add(chat);
+
+                // Check for crisis keywords
+                var lower = userMessage.ToLower();
+                if (CrisisKeywords.Any(k => lower.Contains(k)))
+                {
+                    _context.CrisisAlerts.Add(new CrisisAlert
+                    {
+                        StudentUsername = User.Identity?.Name ?? "Unknown",
+                        TriggerSource = "Chat",
+                        Message = userMessage,
+                        RiskLevel = "Critical",
+                        CreatedAt = DateTime.Now
+                    });
+                }
+
                 await _context.SaveChangesAsync();
             }
+
             var chatHistory = await _context.ChatMessages.OrderBy(c => c.SentAt).ToListAsync();
             return View(chatHistory);
         }

@@ -1,0 +1,62 @@
+﻿@model List<MindEase_Mental_Chatbot_Project.Models.CrisisAlert>
+
+@{
+    ViewData["Title"] = "Crisis Alerts";
+    Layout = "_StudentLayout";
+}
+
+<div class="dash-header mb-4">
+    <h2 class="dash-welcome">Crisis Alerts</h2>
+    <p class="dash-sub">Students who may need immediate support.</p>
+</div>
+
+@if (Model == null || Model.Count == 0)
+{
+    <p class="text-muted">No active crisis alerts.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Source</th>
+                    <th>Risk Level</th>
+                    <th>Message</th>
+                    <th>Time</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var alert in Model)
+                {
+                    <tr class="@(alert.IsResolved ? "table-secondary" : "table-danger")">
+                        <td>@alert.StudentUsername</td>
+                        <td>@alert.TriggerSource</td>
+                        <td><strong>@alert.RiskLevel</strong></td>
+                        <td>@alert.Message</td>
+                        <td>@alert.CreatedAt.ToString("MMM d, h:mm tt")</td>
+                        <td>
+                            @if (!alert.IsResolved)
+                            {
+                                <form asp-action="ResolveAlert" asp-controller="Admin"
+                                      method="post" style="display:inline">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@alert.Id" />
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        Mark Resolved
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span class="text-muted">Resolved</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
