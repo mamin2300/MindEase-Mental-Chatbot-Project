@@ -8,7 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<MindEase_Mental_Chatbot_Project.Services.IChatbotService,
     MindEase_Mental_Chatbot_Project.Services.AzureChatbotService>();
-
 // Register AppDbContext with SQLite
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=Database/mindease.db"));
