@@ -2,6 +2,9 @@ namespace MindEase_Mental_Chatbot_Project.Services
 {
     public class ChatbotService : IChatbotService
     {
+            // Async wrapper — used as fallback if Azure is unavailable
+        public Task<string> GetResponseAsync(string message) =>
+                Task.FromResult(GetResponse(message));
         public string GetResponse(string message)
         {
             if (string.IsNullOrWhiteSpace(message))
@@ -35,5 +38,5 @@ namespace MindEase_Mental_Chatbot_Project.Services
 
             return "Thank you for sharing. I'm here to listen. Can you tell me more about how you're feeling?";
         }
-    }
+    }    
 }
