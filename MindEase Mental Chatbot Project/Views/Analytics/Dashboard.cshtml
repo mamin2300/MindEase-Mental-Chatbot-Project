@@ -4,8 +4,11 @@
 
 @model Dictionary<string, double>
 
+
 @{
+    Layout = "_AdminLayout";
     ViewData["Title"] = "Analytics Dashboard";
+    ViewData["Page"] = "Dashboard";
 }
 
 <div class="container mt-4">
@@ -14,8 +17,8 @@
 
     <div class="row mt-4">
         <div class="col-md-3">
-            <div class="card text-white bg-primary mb-3">
-                <div class="card-header">Total Reports</div>
+            <div class="card mb-3" style="background-color: #b8d4e8; border: none;">
+                <div class="card-header" style="background-color: #a0c4de; border: none;">Total Reports</div>
                 <div class="card-body">
                     <h3 class="card-title">@Model["TotalReports"]</h3>
                 </div>
@@ -23,8 +26,8 @@
         </div>
 
         <div class="col-md-3">
-            <div class="card text-white bg-success mb-3">
-                <div class="card-header">Active Users</div>
+            <div class="card mb-3" style="background-color: #b8e8c8; border: none;">
+                <div class="card-header" style="background-color: #a0deb4; border: none;">Active Users</div>
                 <div class="card-body">
                     <h3 class="card-title">@Model["ActiveUsers"]</h3>
                 </div>
@@ -32,8 +35,8 @@
         </div>
 
         <div class="col-md-3">
-            <div class="card text-white bg-warning mb-3">
-                <div class="card-header">Mood Entries</div>
+            <div class="card mb-3" style="background-color: #f5e6c8; border: none;">
+                <div class="card-header" style="background-color: #f0dab0; border: none;">Mood Entries</div>
                 <div class="card-body">
                     <h3 class="card-title">@Model["MoodEntries"]</h3>
                 </div>
@@ -41,8 +44,8 @@
         </div>
 
         <div class="col-md-3">
-            <div class="card text-white bg-info mb-3">
-                <div class="card-header">Chat Sessions</div>
+            <div class="card mb-3" style="background-color: #c8e0f0; border: none;">
+                <div class="card-header" style="background-color: #b0d0e8; border: none;">Chat Sessions</div>
                 <div class="card-body">
                     <h3 class="card-title">@Model["ChatSessions"]</h3>
                 </div>

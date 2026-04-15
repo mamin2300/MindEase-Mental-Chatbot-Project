@@ -1,0 +1,55 @@
+﻿@* _AdminLayout.cshtml *@
+@* Author: Malika *@
+@* Shared layout for admin portal pages *@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MindEase Admin</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="dashboard-body">
+    <div class="dashboard-wrapper">
+
+        @* Admin sidebar *@
+        <nav class="sidebar">
+            <div class="sidebar-brand">MindEase Admin</div>
+            <ul class="sidebar-nav">
+                <li>
+                    <a asp-controller="Analytics" asp-action="Dashboard"
+                       class="sidebar-link @(ViewData["Page"]?.ToString() == "Dashboard" ? "active" : "")">
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Analytics" asp-action="Index"
+                       class="sidebar-link @(ViewData["Page"]?.ToString() == "Reports" ? "active" : "")">
+                        Reports
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Analytics" asp-action="GenerateReport"
+                       class="sidebar-link @(ViewData["Page"]?.ToString() == "GenerateReport" ? "active" : "")">
+                        Generate Report
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                @* Logout clears admin session *@
+                <a asp-controller="Admin" asp-action="Logout" class="btn-logout">Logout</a>
+            </div>
+        </nav>
+
+        @* Main content area *@
+        <main class="dashboard-main">
+            @RenderBody()
+        </main>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
