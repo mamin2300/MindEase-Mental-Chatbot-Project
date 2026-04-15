@@ -57,6 +57,16 @@ namespace MindEase_Mental_Chatbot_Project.Controllers
             return View(chatHistory);
         }
 
+        // POST: /Student/ClearChat
+        [HttpPost]
+        public async Task<IActionResult> ClearChat()
+        {
+            var messages = _context.ChatMessages.ToList();
+            _context.ChatMessages.RemoveRange(messages);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Chat));
+        }
+
         // GET: /Student/LogMood
         [HttpGet]
         public IActionResult LogMood()

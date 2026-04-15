@@ -19,7 +19,7 @@ namespace MindEase_Mental_Chatbot_Project.Services
         public AzureChatbotService(IConfiguration config, IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
-            _apiKey = config["Gemini:ApiKey"];
+            _apiKey = config["Groq:ApiKey"];
         }
 
         public async Task<string> GetResponseAsync(string message)
@@ -30,41 +30,40 @@ namespace MindEase_Mental_Chatbot_Project.Services
             try
             {
                 var client = _httpClientFactory.CreateClient();
-                var url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={_apiKey}";
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_apiKey}");
 
                 var requestBody = new
                 {
-                    contents = new[]
+                    model = "llama-3.3-70b-versatile",
+                    messages = new[]
                     {
-                        new
-                        {
-                            parts = new[]
-                            {
-                                new { text = SystemPrompt + "\n\nStudent: " + message }
-                            }
-                        }
-                    }
+                        new { role = "system", content = SystemPrompt },
+                        new { role = "user", content = message }
+                    },
+                    max_tokens = 200
                 };
 
                 var json = JsonSerializer.Serialize(requestBody);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await client.PostAsync(url, content);
+                var response = await client.PostAsync("https://api.groq.com/openai/v1/chat/completions", content);
                 var responseJson = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                    return $"[Groq error {response.StatusCode}]: {responseJson}";
 
                 using var doc = JsonDocument.Parse(responseJson);
                 var text = doc.RootElement
-                    .GetProperty("candidates")[0]
+                    .GetProperty("choices")[0]
+                    .GetProperty("message")
                     .GetProperty("content")
-                    .GetProperty("parts")[0]
-                    .GetProperty("text")
                     .GetString();
 
                 return text ?? _fallback.GetResponse(message);
             }
-            catch
+            catch (Exception ex)
             {
-                return _fallback.GetResponse(message);
+                return $"[Exception]: {ex.Message}";
             }
         }
 
