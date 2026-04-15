@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Register";
     Layout = null;
 }
 
@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MindEase — Login</title>
+    <title>MindEase — Register</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -16,31 +16,36 @@
     <div class="login-wrapper">
         <div class="login-card">
             <h2 class="login-title">MindEase</h2>
-            <p class="login-subtitle">Your campus mental wellness companion</p>
+            <p class="login-subtitle">Create your account</p>
 
             @if (ViewBag.Error != null)
             {
                 <div class="alert alert-danger">@ViewBag.Error</div>
             }
 
-            <form asp-action="Login" asp-controller="Account" method="post">
+            <form asp-action="Register" asp-controller="Account" method="post">
                 @Html.AntiForgeryToken()
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" id="username" name="username"
-                           class="form-control" placeholder="Enter your username" required />
+                           class="form-control" placeholder="Choose a username" required />
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <input type="password" id="password" name="password"
-                           class="form-control" placeholder="Enter your password" required />
+                           class="form-control" placeholder="Choose a password" required />
+                </div>
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword"
+                           class="form-control" placeholder="Repeat your password" required />
                 </div>
                 <div class="d-grid mb-3">
-                    <button type="submit" class="btn btn-primary">Sign In</button>
+                    <button type="submit" class="btn btn-primary">Create Account</button>
                 </div>
                 <p class="text-center mb-0" style="font-size: .9rem; color: #888;">
-                    Don't have an account?
-                    <a asp-action="Register" asp-controller="Account">Register here</a>
+                    Already have an account?
+                    <a asp-action="Login" asp-controller="Account">Sign in here</a>
                 </p>
             </form>
         </div>
