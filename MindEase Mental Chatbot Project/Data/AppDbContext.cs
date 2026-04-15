@@ -24,6 +24,7 @@ namespace MindEase_Mental_Chatbot_Project.Data
 
         // Mamin's tables
         public DbSet<TriageResult> TriageResults { get; set; }
+        public DbSet<CrisisAlert> CrisisAlerts { get; set; }
 
         // Shayma's tables
         public DbSet<ApplicationUser> Users { get; set; }

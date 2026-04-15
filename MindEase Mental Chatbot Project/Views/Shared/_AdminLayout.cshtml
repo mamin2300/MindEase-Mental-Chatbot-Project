@@ -36,6 +36,12 @@
                         Generate Report
                     </a>
                 </li>
+                <li>
+                    <a asp-controller="Admin" asp-action="CrisisAlerts"
+                       class="sidebar-link @(ViewData["Page"]?.ToString() == "CrisisAlerts" ? "active" : "")">
+                        Crisis Alerts @await Component.InvokeAsync("AlertCount")
+                    </a>
+                </li>
             </ul>
             <div class="sidebar-footer">
                 @* Logout clears admin session *@

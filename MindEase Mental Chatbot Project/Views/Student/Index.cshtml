@@ -4,12 +4,37 @@
     ViewData["Title"] = "Dashboard";
     ViewData["Page"] = "Dashboard";
     Layout = "_StudentLayout";
+
+    var avg = ViewBag.MoodAverage as double?;
+    string greetingMessage;
+    string greetingColor;
+
+    if (avg == null)
+    {
+        greetingMessage = "Let's help you stay on top of your wellness today.";
+        greetingColor = "text-muted";
+    }
+    else if (avg >= 4)
+    {
+        greetingMessage = "You've been in great spirits this week! Keep it up.";
+        greetingColor = "text-success";
+    }
+    else if (avg >= 3)
+    {
+        greetingMessage = "You've been doing okay this week. Small steps make a big difference.";
+        greetingColor = "text-primary";
+    }
+    else
+    {
+        greetingMessage = "It looks like you've had a tough week. Remember, support is always here for you.";
+        greetingColor = "text-danger";
+    }
 }
 
 <!-- Welcome header -->
 <div class="dash-header mb-4">
-    <h2 class="dash-welcome">Hi, @(User.Identity?.Name ?? "Student") </h2>
-    <p class="dash-sub">Let's help you stay on top of your wellness today.</p>
+    <h2 class="dash-welcome">Hi, @(User.Identity?.Name ?? "Student")</h2>
+    <p class="dash-sub @greetingColor">@greetingMessage</p>
 </div>
 
 <!-- Feature cards -->
@@ -39,6 +64,15 @@
         </div>
     </div>
 </div>
+
+<!-- Mood chart -->
+@if (ViewBag.ChartValues != null && ((List<int>)ViewBag.ChartValues).Count > 0)
+{
+    <div class="dash-section mb-5">
+        <h4 class="dash-section-title">Your Mood This Week</h4>
+        <canvas id="moodChart" height="80"></canvas>
+    </div>
+}
 
 <!-- Mood history preview -->
 <div class="dash-section">
@@ -78,3 +112,37 @@
         <p class="text-muted">No mood entries yet. <a asp-action="LogMood">Log your first mood.</a></p>
     }
 </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const labels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.ChartLabels ?? new List<string>()));
+        const values = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.ChartValues ?? new List<int>()));
+
+        if (labels.length > 0) {
+            const ctx = document.getElementById('moodChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Mood Level',
+                        data: values,
+                        borderColor: '#708090',
+                        backgroundColor: 'rgba(112,128,144,0.15)',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#4B3935',
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: { min: 1, max: 5, ticks: { stepSize: 1 } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+    </script>
+}

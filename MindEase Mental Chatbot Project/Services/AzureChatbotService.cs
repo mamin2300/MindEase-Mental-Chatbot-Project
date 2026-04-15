@@ -1,68 +1,72 @@
-﻿using Azure;
-using Azure.AI.OpenAI;
-using OpenAI.Chat;
-
-// Alias to avoid name clash with our ChatMessage model
-using AzureSystemMessage = OpenAI.Chat.SystemChatMessage;
-using AzureUserMessage = OpenAI.Chat.UserChatMessage;
+﻿using System.Text;
+using System.Text.Json;
 
 namespace MindEase_Mental_Chatbot_Project.Services
 {
     public class AzureChatbotService : IChatbotService
     {
-        private readonly ChatClient? _chatClient;
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly string? _apiKey;
         private readonly ChatbotService _fallback = new();
 
         private const string SystemPrompt =
-            "You are MindEase, a compassionate mental health support chatbot for college students. " +
-            "Your role is to listen actively, validate feelings, and offer evidence-based coping strategies. " +
-            "Keep responses warm, concise (2-4 sentences), and conversational. " +
-            "Never diagnose or replace a licensed professional. " +
-            "If a student mentions self-harm or suicide, always provide these crisis resources immediately: " +
+            "You are MindEase, a compassionate mental wellness chatbot for university students. " +
+            "Respond with empathy, keep answers concise (2-4 sentences), and always encourage " +
+            "professional help for serious concerns. Never diagnose. Be warm and supportive. " +
+            "If a student mentions self-harm or suicide, always provide these crisis resources: " +
             "Crisis Services Canada 1-833-456-4566 (24/7), Text HOME to 741741, or call 911.";
 
-        public AzureChatbotService(IConfiguration config)
+        public AzureChatbotService(IConfiguration config, IHttpClientFactory httpClientFactory)
         {
-            var endpoint = config["AzureOpenAI:Endpoint"];
-            var apiKey = config["AzureOpenAI:ApiKey"];
-            var deployment = config["AzureOpenAI:DeploymentName"];
-
-            if (!string.IsNullOrWhiteSpace(endpoint)
-                && !string.IsNullOrWhiteSpace(apiKey)
-                && !string.IsNullOrWhiteSpace(deployment)
-                && !endpoint.Contains("YOUR-RESOURCE-NAME"))
-            {
-                var client = new AzureOpenAIClient(
-                    new Uri(endpoint),
-                    new AzureKeyCredential(apiKey));
-                _chatClient = client.GetChatClient(deployment);
-            }
+            _httpClientFactory = httpClientFactory;
+            _apiKey = config["Groq:ApiKey"];
         }
 
         public async Task<string> GetResponseAsync(string message)
         {
-            if (_chatClient == null)
+            if (string.IsNullOrWhiteSpace(_apiKey))
                 return _fallback.GetResponse(message);
 
             try
             {
-                var messages = new List<OpenAI.Chat.ChatMessage>
+                var client = _httpClientFactory.CreateClient();
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_apiKey}");
+
+                var requestBody = new
                 {
-                    new AzureSystemMessage(SystemPrompt),
-                    new AzureUserMessage(message)
+                    model = "llama-3.3-70b-versatile",
+                    messages = new[]
+                    {
+                        new { role = "system", content = SystemPrompt },
+                        new { role = "user", content = message }
+                    },
+                    max_tokens = 200
                 };
 
-                ChatCompletion result = await _chatClient.CompleteChatAsync(messages);
-                return result.Content[0].Text;
+                var json = JsonSerializer.Serialize(requestBody);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync("https://api.groq.com/openai/v1/chat/completions", content);
+                var responseJson = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                    return $"[Groq error {response.StatusCode}]: {responseJson}";
+
+                using var doc = JsonDocument.Parse(responseJson);
+                var text = doc.RootElement
+                    .GetProperty("choices")[0]
+                    .GetProperty("message")
+                    .GetProperty("content")
+                    .GetString();
+
+                return text ?? _fallback.GetResponse(message);
             }
-            catch
+            catch (Exception ex)
             {
-                // Falls back to keyword responses if Azure call fails
-                return _fallback.GetResponse(message);
+                return $"[Exception]: {ex.Message}";
             }
         }
 
-        // Sync fallback
         public string GetResponse(string message) => _fallback.GetResponse(message);
     }
 }

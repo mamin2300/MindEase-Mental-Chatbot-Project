@@ -32,6 +32,20 @@ namespace MindEase_Mental_Chatbot_Project.Controllers
 
             var result = _triageService.AssessRisk(message);
             _context.TriageResults.Add(result);
+
+            if (_triageService.IsCrisisLevel(result.RiskLevel))
+            {
+                var alert = new CrisisAlert
+                {
+                    StudentUsername = User.Identity?.Name ?? "Unknown",
+                    TriggerSource = "Triage",
+                    Message = message,
+                    RiskLevel = result.RiskLevel,
+                    CreatedAt = DateTime.Now
+                };
+                _context.CrisisAlerts.Add(alert);
+            }
+
             await _context.SaveChangesAsync();
 
             if (_triageService.IsCrisisLevel(result.RiskLevel))
