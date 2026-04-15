@@ -1,39 +1,80 @@
+﻿@model List<MindEase_Mental_Chatbot_Project.Models.MoodEntry>
+
 @{
-    ViewData["Title"] = "Student Dashboard";
+    ViewData["Title"] = "Dashboard";
+    ViewData["Page"] = "Dashboard";
+    Layout = "_StudentLayout";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to MindEase</h1>
-    <p class="lead">Your mental wellness companion</p>
-    <hr />
+<!-- Welcome header -->
+<div class="dash-header mb-4">
+    <h2 class="dash-welcome">Hi, @(User.Identity?.Name ?? "Student") </h2>
+    <p class="dash-sub">Let's help you stay on top of your wellness today.</p>
+</div>
 
-    <div class="row mt-4">
-        <div class="col-md-4 mb-3">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Chat with MindEase</h5>
-                    <p class="card-text">Talk to our AI chatbot about how you're feeling.</p>
-                    <a asp-action="Chat" class="btn btn-primary">Start Chat</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Log Your Mood</h5>
-                    <p class="card-text">Track your daily mood and feelings.</p>
-                    <a asp-action="LogMood" class="btn btn-success">Log Mood</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Mood History</h5>
-                    <p class="card-text">View your past mood entries.</p>
-                    <a asp-action="MoodHistory" class="btn btn-info">View History</a>
-                </div>
-            </div>
+<!-- Feature cards -->
+<div class="row g-3 mb-5">
+    <div class="col-md-4">
+        <div class="dash-card">
+            <div class="dash-card-icon">💬</div>
+            <h5>Chat with MindEase</h5>
+            <p>Talk to our AI chatbot about how you're feeling.</p>
+            <a asp-action="Chat" asp-controller="Student" class="btn btn-primary btn-sm">Start Chat</a>
         </div>
     </div>
+    <div class="col-md-4">
+        <div class="dash-card">
+            <div class="dash-card-icon">📝</div>
+            <h5>Log Your Mood</h5>
+            <p>Track your daily mood and feelings.</p>
+            <a asp-action="LogMood" asp-controller="Student" class="btn btn-primary btn-sm">Log Mood</a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="dash-card">
+            <div class="dash-card-icon">🩺</div>
+            <h5>Mental Health Triage</h5>
+            <p>Get an assessment of your current mental health.</p>
+            <a asp-action="Index" asp-controller="Triage" class="btn btn-primary btn-sm">Start Triage</a>
+        </div>
+    </div>
+</div>
+
+<!-- Mood history preview -->
+<div class="dash-section">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="dash-section-title">Recent Mood History</h4>
+        <a asp-action="MoodHistory" asp-controller="Student" class="btn btn-outline-primary btn-sm">
+            View Full History
+        </a>
+    </div>
+
+    @if (Model != null && Model.Count > 0)
+    {
+        <div class="row g-3">
+            @foreach (var entry in Model)
+            {
+                <div class="col-md-4">
+                    <div class="mood-preview-card">
+                        <div class="mood-preview-date">@entry.CreatedAt.ToString("MMM d, yyyy")</div>
+                        <div class="mood-preview-level">
+                            @for (int i = 0; i < entry.MoodLevel; i++)
+                            {
+                                <span>★</span>
+                            }
+                            @for (int i = entry.MoodLevel; i < 5; i++)
+                            {
+                                <span class="empty-star">☆</span>
+                            }
+                        </div>
+                        <div class="mood-preview-note">@(entry.Notes ?? "No notes")</div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-muted">No mood entries yet. <a asp-action="LogMood">Log your first mood.</a></p>
+    }
 </div>

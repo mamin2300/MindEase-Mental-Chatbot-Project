@@ -1,0 +1,49 @@
+﻿@model MindEase_Mental_Chatbot_Project.Models.TriageResult
+
+@{
+    ViewData["Title"] = "Crisis Support";
+    ViewData["Page"] = "Triage";
+    Layout = "_StudentLayout";
+}
+
+<h2>You Are Not Alone</h2>
+<p>Based on what you shared, please reach out to one of these resources immediately.</p>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <div class="card p-3 text-center">
+            <h5>Crisis Services Canada</h5>
+            <h3>1-833-456-4566</h3>
+            <p>Available 24/7 — free and confidential</p>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card p-3 text-center">
+            <h5>Crisis Text Line</h5>
+            <h3>Text HOME to 741741</h3>
+            <p>Text from anywhere, 24/7</p>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card p-3 text-center">
+            <h5>Campus Counselling</h5>
+            <h3>Ext. 2400</h3>
+            <p>Same-day urgent appointments available</p>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card p-3 text-center">
+            <h5>Emergency Services</h5>
+            <h3>911</h3>
+            <p>For immediate physical danger</p>
+        </div>
+    </div>
+</div>
+
+<div class="card p-4 mb-3" style="max-width: 600px;">
+    <h5>Assessment Summary</h5>
+    <p><strong>Risk Level:</strong> @Model.RiskLevel</p>
+    <p><strong>Notes:</strong> @Model.AssessmentNotes</p>
+</div>
+
+<a asp-action="Index" asp-controller="Student" class="btn btn-secondary">Return to Dashboard</a>

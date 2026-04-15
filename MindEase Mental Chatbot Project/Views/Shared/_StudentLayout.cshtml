@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MindEase</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="dashboard-body">
+
+    <div class="dashboard-wrapper">
+
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-brand">MindEase</div>
+            <ul class="sidebar-nav">
+                <li>
+                    <a asp-controller="Student" asp-action="Index"
+                       class="sidebar-link @(ViewData["Page"]?.ToString() == "Dashboard" ? "active" : "")">
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Student" asp-action="Chat"
+                       class="sidebar-link @(ViewData["Page"]?.ToString() == "Chat" ? "active" : "")">
+                        Chat
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Student" asp-action="LogMood"
+                       class="sidebar-link @(ViewData["Page"]?.ToString() == "LogMood" ? "active" : "")">
+                        Log Mood
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Student" asp-action="MoodHistory"
+                       class="sidebar-link @(ViewData["Page"]?.ToString() == "MoodHistory" ? "active" : "")">
+                        Mood History
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Triage" asp-action="Index"
+                       class="sidebar-link @(ViewData["Page"]?.ToString() == "Triage" ? "active" : "")">
+                        Triage
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <form asp-action="Logout" asp-controller="Account" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn-logout">Logout</button>
+                </form>
+            </div>
+        </nav>
+
+        <!-- Main content -->
+        <main class="dashboard-main">
+            @RenderBody()
+        </main>
+
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

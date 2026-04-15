@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using MindEase_Mental_Chatbot_Project.Data;
 using MindEase_Mental_Chatbot_Project.Models;
 using MindEase_Mental_Chatbot_Project.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MindEase_Mental_Chatbot_Project.Controllers
 {
+    [Authorize]
     public class StudentController : Controller
     {
         private readonly IChatbotService _chatbotService;
@@ -18,9 +20,13 @@ namespace MindEase_Mental_Chatbot_Project.Controllers
         }
 
         // GET: /Student
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var recentMoods = await _context.MoodEntries
+                .OrderByDescending(m => m.CreatedAt)
+                .Take(3)
+                .ToListAsync();
+            return View(recentMoods);
         }
 
         // GET: /Student/Chat

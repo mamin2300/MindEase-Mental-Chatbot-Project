@@ -15,6 +15,17 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Register AnalyticsService for dependency injection
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 
+builder.Services.AddScoped<ITriageService, TriageService>();
+
+builder.Services.AddAuthentication("CookieAuth")
+    .AddCookie("CookieAuth", options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.LogoutPath = "/Account/Logout";
+    });
+
+builder.Services.AddSession();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,10 +40,13 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+app.UseSession();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Chatbot}/{action=Index}/{id?}");
+    pattern: "{controller=Account}/{action=Login}/{id?}");
 
 app.Run();

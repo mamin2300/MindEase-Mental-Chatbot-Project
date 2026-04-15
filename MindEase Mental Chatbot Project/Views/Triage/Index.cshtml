@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Mental Health Triage";
+    ViewData["Page"] = "Triage";
+    Layout = "_StudentLayout";
+}
+
+<h2>Mental Health Triage</h2>
+<p>Describe what you're experiencing and MindEase will assess your situation.</p>
+
+<div class="card p-4" style="max-width: 600px;">
+    <form asp-action="AssessRisk" asp-controller="Triage" method="post">
+        @Html.AntiForgeryToken()
+        <div class="mb-3">
+            <label for="message" class="form-label">What's on your mind?</label>
+            <textarea id="message" name="message" class="form-control"
+                      rows="5" placeholder="Tell us how you're feeling..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Assess My Situation</button>
+    </form>
+</div>

@@ -1,22 +1,341 @@
+﻿/* ============================================================
+   MindEase — Gray Sky Color Scheme
+   #FAF3E0  cream        → page background
+   #CBDFEA  light blue   → sidebar, cards, bubbles
+   #C8C2BC  light gray   → borders, secondary
+   #708090  slate gray   → buttons, active nav
+   #4B3935  dark brown   → headings, text, hover
+   ============================================================ */
+
+:root {
+    --cream: #FAF3E0;
+    --sky-light: #CBDFEA;
+    --sky-mid: #C8C2BC;
+    --sky-slate: #708090;
+    --sky-dark: #4B3935;
+}
+
+/* ── Base ────────────────────────────────────── */
 html {
-  font-size: 14px;
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    html {
+        font-size: 16px;
+    }
 }
 
 body {
-  margin-bottom: 60px;
+    background-color: var(--cream);
+    color: var(--sky-dark);
+    margin-bottom: 60px;
+}
+
+/* ── Buttons ─────────────────────────────────── */
+.btn-primary {
+    background-color: var(--sky-slate);
+    border-color: var(--sky-slate);
+    color: #fff;
+}
+
+    .btn-primary:hover,
+    .btn-primary:focus {
+        background-color: var(--sky-dark);
+        border-color: var(--sky-dark);
+        color: #fff;
+    }
+
+.btn-outline-primary {
+    border-color: var(--sky-slate);
+    color: var(--sky-slate);
+}
+
+    .btn-outline-primary:hover {
+        background-color: var(--sky-slate);
+        color: #fff;
+    }
+
+.btn-secondary {
+    background-color: var(--sky-mid);
+    border-color: var(--sky-mid);
+    color: var(--sky-dark);
+}
+
+    .btn-secondary:hover {
+        background-color: #b0aaa4;
+        border-color: #b0aaa4;
+        color: var(--sky-dark);
+    }
+
+/* ── Focus ring ──────────────────────────────── */
+.btn:focus,
+.btn:active:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.15rem rgba(112, 128, 144, 0.4);
+}
+
+/* ── Cards ───────────────────────────────────── */
+.card {
+    border: 1px solid var(--sky-mid);
+    border-radius: 12px;
+    background-color: #fff;
+}
+
+/* ── Top navbar (used on non-dashboard pages) ── */
+.navbar {
+    background-color: var(--sky-slate) !important;
+}
+
+    .navbar-brand,
+    .navbar .nav-link {
+        color: #fff !important;
+    }
+
+        .navbar .nav-link:hover {
+            color: var(--cream) !important;
+        }
+
+/* ── Footer ──────────────────────────────────── */
+.footer {
+    background-color: var(--sky-mid);
+    color: var(--sky-dark);
+    padding: 14px 0;
+    font-size: .9rem;
+}
+
+    .footer a {
+        color: var(--sky-dark);
+    }
+
+/* ══════════════════════════════════════════════
+   LOGIN PAGE
+   ══════════════════════════════════════════════ */
+.login-body {
+    background-color: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.login-wrapper {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+}
+
+.login-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 40px;
+    border: 1px solid var(--sky-mid);
+    box-shadow: 0 4px 24px rgba(75, 57, 53, 0.08);
+}
+
+.login-title {
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    color: var(--sky-dark);
+    margin-bottom: 4px;
+}
+
+.login-subtitle {
+    text-align: center;
+    color: var(--sky-slate);
+    margin-bottom: 28px;
+    font-size: .95rem;
+}
+
+/* ══════════════════════════════════════════════
+   DASHBOARD LAYOUT (sidebar)
+   ══════════════════════════════════════════════ */
+.dashboard-body {
+    background-color: var(--cream);
+    margin: 0;
+}
+
+.dashboard-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ── Sidebar ─────────────────────────────────── */
+.sidebar {
+    width: 220px;
+    min-height: 100vh;
+    background-color: var(--sky-light);
+    border-right: 1px solid var(--sky-mid);
+    display: flex;
+    flex-direction: column;
+    padding: 28px 0;
+    flex-shrink: 0;
+}
+
+.sidebar-brand {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--sky-dark);
+    padding: 0 24px 28px;
+    letter-spacing: .5px;
+}
+
+.sidebar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+    .sidebar-nav li {
+        margin: 3px 0;
+    }
+
+.sidebar-link {
+    display: block;
+    padding: 10px 24px;
+    color: var(--sky-dark);
+    text-decoration: none;
+    font-size: .95rem;
+    transition: background .15s, color .15s;
+    border-left: 3px solid transparent;
+}
+
+    .sidebar-link:hover {
+        background-color: rgba(112, 128, 144, 0.12);
+        color: var(--sky-dark);
+        border-left-color: var(--sky-slate);
+    }
+
+    .sidebar-link.active {
+        background-color: rgba(112, 128, 144, 0.18);
+        color: var(--sky-dark);
+        font-weight: 600;
+        border-left-color: var(--sky-dark);
+    }
+
+.sidebar-footer {
+    padding: 20px 24px 0;
+}
+
+.btn-logout {
+    background: none;
+    border: 1px solid var(--sky-mid);
+    border-radius: 8px;
+    padding: 8px 16px;
+    color: var(--sky-slate);
+    cursor: pointer;
+    width: 100%;
+    font-size: .9rem;
+    transition: background .15s;
+}
+
+    .btn-logout:hover {
+        background-color: var(--sky-mid);
+        color: var(--sky-dark);
+    }
+
+/* ── Main content area ───────────────────────── */
+.dashboard-main {
+    flex-grow: 1;
+    padding: 40px 48px;
+    overflow-y: auto;
+}
+
+/* ── Dashboard header ────────────────────────── */
+.dash-header {
+    border-bottom: 1px solid var(--sky-mid);
+    padding-bottom: 20px;
+    margin-bottom: 32px;
+}
+
+.dash-welcome {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--sky-dark);
+}
+
+.dash-sub {
+    color: var(--sky-slate);
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* ── Feature cards ───────────────────────────── */
+.dash-card {
+    background: #fff;
+    border: 1px solid var(--sky-mid);
+    border-radius: 14px;
+    padding: 28px 20px;
+    height: 100%;
+    text-align: center;
+    transition: box-shadow .2s;
+}
+
+    .dash-card:hover {
+        box-shadow: 0 4px 16px rgba(75, 57, 53, 0.1);
+    }
+
+.dash-card-icon {
+    font-size: 2.2rem;
+    margin-bottom: 12px;
+}
+
+.dash-card h5 {
+    color: var(--sky-dark);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.dash-card p {
+    color: var(--sky-slate);
+    font-size: .9rem;
+    margin-bottom: 16px;
+}
+
+/* ── Mood preview section ────────────────────── */
+.dash-section {
+    background: #fff;
+    border: 1px solid var(--sky-mid);
+    border-radius: 14px;
+    padding: 28px;
+}
+
+.dash-section-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--sky-dark);
+}
+
+.mood-preview-card {
+    background: var(--sky-light);
+    border-radius: 10px;
+    padding: 18px;
+    border: 1px solid var(--sky-mid);
+}
+
+.mood-preview-date {
+    font-size: .82rem;
+    color: var(--sky-slate);
+    margin-bottom: 6px;
+}
+
+.mood-preview-level {
+    color: var(--sky-dark);
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+}
+
+.empty-star {
+    color: var(--sky-mid);
+}
+
+.mood-preview-note {
+    font-size: .88rem;
+    color: var(--sky-dark);
 }

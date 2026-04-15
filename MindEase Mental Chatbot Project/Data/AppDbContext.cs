@@ -24,6 +24,8 @@ namespace MindEase_Mental_Chatbot_Project.Data
         public DbSet<ChatMessage> ChatMessages { get; set; }
 
         // Mamin's tables - to be added by Mamin
+        // Mamin's tables
+        public DbSet<TriageResult> TriageResults { get; set; }
         // public DbSet<CrisisAlert> CrisisAlerts { get; set; }
 
         // Shayma's tables - to be added by Shayma
