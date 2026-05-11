@@ -71,11 +71,11 @@ Collaborative academic project — Sheridan College, Winter 2025.
 
 | Name | 
 |------|
-| Mamin |
+| Mamin Khan |
 | Malika Muskan |
 | Azm Khan |
-| Shaymaa |
+| Shaymaa Hasan|
 
 ---
 
-*Built with care and a lot of coffee ☕*
+
